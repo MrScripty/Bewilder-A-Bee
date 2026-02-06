@@ -1,4 +1,8 @@
-# PumaBot
+# Bewilder A Bee
+
+An generalised local/API agentic assistant. Gathers all your data accross multiple platforms and puts it into a local database so it can do stuff. What stuff? Basicly any stuff. Need to finetune a model to make a digital copy of yourself? Want to orchestrate Claude Code instances? Curate your email and social media feed? It does stuff.
+
+Built on Pantograph and Pumas Library as part of Studio Whip development.
 
 To start your Phoenix server:
 

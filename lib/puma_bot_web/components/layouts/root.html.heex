@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title default="PumaBot">
+      {assigns[:page_title]}
+    </.live_title>
+    <!-- daisyUI + Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QR Code library for WhatsApp authentication -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <!-- Phoenix dependencies -->
+    <script defer src="https://cdn.jsdelivr.net/npm/phoenix@1.7.20/priv/static/phoenix.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/phoenix_live_view@1.1.22/priv/static/phoenix_live_view.min.js"></script>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
+  </head>
+  <body class="bg-base-100">
+    {@inner_content}
+  </body>
+</html>

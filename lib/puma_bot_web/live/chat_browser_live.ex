@@ -411,7 +411,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
     ~H"""
     <ul class="menu menu-sm p-2">
       <%= for chat <- @chats do %>
-        <li>
+        <li id={"chat-#{chat.chat_jid}"}>
           <.link
             patch={~p"/chat/whatsapp/#{URI.encode(chat.chat_jid)}"}
             class={if @selected && @selected.id == chat.chat_jid, do: "active", else: ""}
@@ -436,7 +436,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
     ~H"""
     <ul class="menu menu-sm p-2">
       <%= for session <- @sessions do %>
-        <li>
+        <li id={"session-#{session.session_id}"}>
           <.link
             patch={~p"/chat/claude/#{URI.encode(session.session_id)}"}
             class={if @selected && @selected.id == session.session_id, do: "active", else: ""}
@@ -525,12 +525,12 @@ defmodule PumaBotWeb.ChatBrowserLive do
 
     assigns =
       assigns
-      |> Map.put(:regular_messages, regular_messages)
-      |> Map.put(:msg_lookup, msg_lookup)
-      |> Map.put(:reaction_map, reaction_map)
+      |> assign(:regular_messages, regular_messages)
+      |> assign(:msg_lookup, msg_lookup)
+      |> assign(:reaction_map, reaction_map)
 
     ~H"""
-    <div class="flex-1 overflow-y-auto p-4 space-y-2">
+    <div id="message-list" class="flex-1 overflow-y-auto p-4 space-y-2">
       <%= for message <- @regular_messages do %>
         <.whatsapp_bubble
           message={message}
@@ -544,7 +544,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
 
   defp message_list(assigns) do
     ~H"""
-    <div class="flex-1 overflow-y-auto p-4 space-y-2">
+    <div id="message-list" class="flex-1 overflow-y-auto p-4 space-y-2">
       <%= for message <- @messages do %>
         <.message_bubble message={message} source={@source} />
       <% end %>
@@ -557,7 +557,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
     assigns = assign(assigns, :sender_id, sender_id)
 
     ~H"""
-    <div class={"chat #{if @message.is_from_me, do: "chat-end", else: "chat-start"}"}>
+    <div id={"msg-#{@message.id}"} class={"chat #{if @message.is_from_me, do: "chat-end", else: "chat-start"}"}>
       <div class="chat-image avatar">
         <div class="w-8 rounded-full">
           <img src={avatar_url(@sender_id, @message.is_from_me)} alt="" />
@@ -592,7 +592,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
     assigns = assign(assigns, :sender_id, sender_id)
 
     ~H"""
-    <div class={"chat #{if @message.is_from_me, do: "chat-end", else: "chat-start"}"}>
+    <div id={"msg-#{@message.id}"} class={"chat #{if @message.is_from_me, do: "chat-end", else: "chat-start"}"}>
       <div class="chat-image avatar">
         <div class="w-8 rounded-full">
           <img src={avatar_url(@sender_id, @message.is_from_me)} alt="" />
@@ -611,7 +611,7 @@ defmodule PumaBotWeb.ChatBrowserLive do
 
   defp message_bubble(%{source: :claude} = assigns) do
     ~H"""
-    <div class={"chat #{if @message.role == :user, do: "chat-end", else: "chat-start"}"}>
+    <div id={"msg-#{@message.id}"} class={"chat #{if @message.role == :user, do: "chat-end", else: "chat-start"}"}>
       <div class="chat-image avatar">
         <div class="w-8 rounded-full">
           <img src={claude_avatar_url(@message.role)} alt="" />
@@ -714,11 +714,6 @@ defmodule PumaBotWeb.ChatBrowserLive do
   defp format_date(nil), do: ""
   defp format_date(datetime) do
     Calendar.strftime(datetime, "%b %d, %Y")
-  end
-
-  defp format_time(nil), do: ""
-  defp format_time(datetime) do
-    Calendar.strftime(datetime, "%H:%M")
   end
 
   defp format_datetime(nil), do: ""
